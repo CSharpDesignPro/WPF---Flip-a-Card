@@ -1,0 +1,285 @@
+﻿<!--/// <Summary>
+    /// Author : R. Arun Mutharasu
+    /// Created :27-06-2023
+    /// YouTube Channel : C# Design Pro 
+    /// </Summary>-->
+
+<Window x:Class="Flip_Card.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:UserControl="clr-namespace:Flip_Card"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="800"
+        Width="800"
+        WindowStyle="None"
+        WindowState="Maximized">
+
+    <Grid Background="#45B3E0">
+
+        <!--// Define a 3D viewport //-->
+
+        <Viewport3D Height="800"
+                    Width="800">
+
+            <!--// Set the camera for the viewport //-->
+
+            <Viewport3D.Camera>
+                <PerspectiveCamera Position="0,0,4" />
+            </Viewport3D.Camera>
+
+            <!--// Define a 2D visual element within the 3D viewport //-->
+
+            <Viewport2DVisual3D x:Name="ViewPort">
+
+                <!--// Apply a transformation to the 2D visual element //-->
+
+                <Viewport2DVisual3D.Transform>
+                    <RotateTransform3D>
+                        <RotateTransform3D.Rotation>
+                            <AxisAngleRotation3D Angle="0"
+                                                 Axis="0,1,0" />
+                        </RotateTransform3D.Rotation>
+                    </RotateTransform3D>
+                </Viewport2DVisual3D.Transform>
+
+                <!--// Define the geometry of the 2D visual element //-->
+
+                <Viewport2DVisual3D.Geometry>
+                    <MeshGeometry3D Positions="-1,1,0 -1,-1,0 1,-1,0 1,1,0"
+                                    TextureCoordinates="0,0 0,1 1,1 1,0"
+                                    TriangleIndices="0 1 2 0 2 3" />
+                </Viewport2DVisual3D.Geometry>
+
+                <!--// Set the material for the 2D visual element //-->
+
+                <Viewport2DVisual3D.Material>
+                    <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"
+                                     Brush="#FFFFFF" />
+                </Viewport2DVisual3D.Material>
+
+                <!--// Add a Toggle Button //-->
+
+                <ToggleButton x:Name="Flip_Card"
+                              Cursor="Hand">
+
+                    <!--// Toggle Button Style //-->
+
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="border"
+                                                BorderThickness="0">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ToggleButton.Style>
+
+                    <ToggleButton.Content>
+
+                        <Grid>
+
+                            <!--// Front //-->
+
+                            <UserControl:FrontSide x:Name="Front_Side" />
+
+                            <!--// Back //-->
+
+                            <UserControl:BackSide x:Name="Back_Side"
+                                                  Opacity="0" />
+
+                        </Grid>
+
+                    </ToggleButton.Content>
+
+                    <!--// Toggle Button - Checked Event //-->
+
+                    <ToggleButton.Triggers>
+                        <EventTrigger RoutedEvent="ToggleButton.Checked">
+                            <BeginStoryboard>
+
+                                <!--// Front Side Animation //-->
+
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="Front_Side"
+                                                     Storyboard.TargetProperty="(Image.Opacity)"
+                                                     BeginTime="0:0:0.5"
+                                                     Duration="0:0:0"
+                                                     From="1.0"
+                                                     To="0.0" />
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                            <!--// Back Side Animation //-->
+
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="Back_Side"
+                                                     Storyboard.TargetProperty="(Image.Opacity)"
+                                                     BeginTime="0:0:0.5"
+                                                     Duration="0:0:0"
+                                                     From="0.0"
+                                                     To="1.0" />
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                            <!--// Create a rotation animation to animate the rotation of the ViewPort //-->
+
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <Rotation3DAnimation Storyboard.TargetName="ViewPort"
+                                                         Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                         Duration="0:0:0.5"
+                                                         BeginTime="0:0:0">
+
+                                        <!--// Set the initial rotation values //-->
+
+                                        <Rotation3DAnimation.From>
+                                            <AxisAngleRotation3D Angle="0"
+                                                                 Axis="0,1,0" />
+                                        </Rotation3DAnimation.From>
+
+                                        <!--// Set the final rotation values //-->
+
+                                        <Rotation3DAnimation.To>
+                                            <AxisAngleRotation3D Angle="90"
+                                                                 Axis="0,1,0" />
+                                        </Rotation3DAnimation.To>
+
+                                    </Rotation3DAnimation>
+
+                                    <Rotation3DAnimation Storyboard.TargetName="ViewPort"
+                                                         Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                         Duration="0:0:0.5"
+                                                         BeginTime="0:0:0.5">
+
+                                        <Rotation3DAnimation.From>
+                                            <AxisAngleRotation3D Angle="-90"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.From>
+
+                                        <Rotation3DAnimation.To>
+                                            <AxisAngleRotation3D Angle="0"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.To>
+
+                                    </Rotation3DAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+
+                        <!--// Toggle Button - Unchecked Event //-->
+
+                        <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                            <BeginStoryboard>
+                                <Storyboard>
+
+                                    <!--Back Side Animation-->
+
+                                    <DoubleAnimation Storyboard.TargetName="Back_Side"
+                                                     Storyboard.TargetProperty="(Image.Opacity)"
+                                                     BeginTime="0:0:0.5"
+                                                     Duration="0:0:0"
+                                                     From="1.0"
+                                                     To="0.0" />
+
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                            <BeginStoryboard>
+                                <Storyboard>
+
+                                    <!--Front Side Animation-->
+
+                                    <DoubleAnimation Storyboard.TargetName="Front_Side"
+                                                     Storyboard.TargetProperty="(Image.Opacity)"
+                                                     BeginTime="0:0:0.5"
+                                                     Duration="0:0:0"
+                                                     From="0.0"
+                                                     To="1.0" />
+
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <Rotation3DAnimation Storyboard.TargetName="ViewPort"
+                                                         Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                         Duration="0:0:0.5"
+                                                         BeginTime="0:0:0">
+
+                                        <Rotation3DAnimation.From>
+                                            <AxisAngleRotation3D Angle="0"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.From>
+
+                                        <Rotation3DAnimation.To>
+                                            <AxisAngleRotation3D Angle="-90"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.To>
+
+                                    </Rotation3DAnimation>
+
+                                    <Rotation3DAnimation Storyboard.TargetName="ViewPort"
+                                                         Storyboard.TargetProperty="(Viewport2DVisual3D.Transform).(RotateTransform3D.Rotation)"
+                                                         Duration="0:0:0.5"
+                                                         BeginTime="0:0:0.5">
+
+                                        <Rotation3DAnimation.From>
+                                            <AxisAngleRotation3D Angle="90"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.From>
+
+                                        <Rotation3DAnimation.To>
+                                            <AxisAngleRotation3D Angle="0"
+                                                                 Axis="0, 1, 0" />
+                                        </Rotation3DAnimation.To>
+
+                                    </Rotation3DAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+
+                        </EventTrigger>
+
+                    </ToggleButton.Triggers>
+
+                </ToggleButton>
+
+            </Viewport2DVisual3D>
+
+            <!--// Create a ModelVisual3D element //-->
+
+            <ModelVisual3D>
+
+                <!--// Set the content of the ModelVisual3D //-->
+
+                <ModelVisual3D.Content>
+
+                    <!--// Create a DirectionLight with a specific color and direction //-->
+
+                    <DirectionalLight Color="#FFFFFF"
+                                      Direction="0,0,-1" />
+
+                </ModelVisual3D.Content>
+
+            </ModelVisual3D>
+
+        </Viewport3D>
+
+        <!--// Exit Button //-->
+
+        <Button x:Name="ExitBtn"
+                Cursor="Hand"
+                Style="{StaticResource ExitBtnStyle}"
+                Click="ExitBtn_Click" />
+
+    </Grid>
+
+</Window>

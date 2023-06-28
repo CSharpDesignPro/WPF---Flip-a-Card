@@ -1,0 +1,61 @@
+﻿<!--/// <Summary>
+    /// Author : R. Arun Mutharasu
+    /// Created :27-06-2023
+    /// YouTube Channel : C# Design Pro 
+    /// </Summary>-->
+    
+    <UserControl x:Class="Flip_Card.BackSide"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Flip_Card"
+             mc:Ignorable="d"
+             d:DesignHeight="300"
+             d:DesignWidth="300">
+    
+    <Grid>
+        
+        <!--// Background //-->
+
+        <Border Height="200"
+                Width="200"
+                CornerRadius="10">
+
+            <Border.Background>
+                
+                <!--// Use a visual brush for the background //-->
+
+                <VisualBrush>
+
+                    <VisualBrush.Visual>
+                        
+                        <!--// Create a canvas to hold the visual elements //-->
+
+                        <Canvas>
+
+                            <Border x:Name="Back_Side"
+                                    Height="1100"
+                                    Width="1100"
+                                    Opacity="1"
+                                    Background="#21201E">
+                                
+                                <!--// Add Content //-->
+
+                                <ContentControl Template="{StaticResource BackSide_Content}" />
+
+                            </Border>
+                            
+                        </Canvas>
+                        
+                    </VisualBrush.Visual>
+                    
+                </VisualBrush>
+                
+            </Border.Background>
+            
+        </Border>
+
+    </Grid>
+    
+</UserControl>
